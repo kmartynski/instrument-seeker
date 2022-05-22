@@ -12,6 +12,7 @@
 .idea/**/usage.statistics.xml
 .idea/**/dictionaries
 .idea/**/shelf
+.idea
 
 # AWS User-specific
 .idea/**/aws.xml
@@ -167,28 +168,5 @@ fabric.properties
 *aap
 *noot
 *mies
-
-# Other names that would make sense
-*tests
-*testsdir
-*testsfile
-*testsfiles
-*test
-*testdir
-*testfile
-*testfiles
-*testing
-*testingdir
-*testingfile
-*testingfiles
-*temp
-*tempdir
-*tempfile
-*tempfiles
-*tmp
-*tmpdir
-*tmpfile
-*tmpfiles
-*lol
 
 # End of https://www.toptal.com/developers/gitignore/api/pycharm,test
