@@ -8,7 +8,6 @@ def main():
     for piano in pianos:
         finder = PianoFinder(piano)
         finder.get_offers()
-        print(finder.get_offers())
 
 
 if __name__ == "__main__":
