@@ -3,7 +3,15 @@ import requests
 from typing import Dict, List
 
 from enums import PianoCondition
-from main import PIANO_PAGES_MAPPING
+
+
+PIANO_PAGES_MAPPING: Dict[str, str] = {
+    "YAMAHA CP-60M": "https://www.ebay.com/sch/i.html?_nkw=yamaha+cp+60+m",
+    "YAMAHA CP-70B": "https://www.ebay.com/sch/i.html?_nkw=yamaha+cp+70+b",
+    "YAMAHA CP-80B": "https://www.ebay.com/sch/i.html?_nkw=yamaha+cp+80+b",
+    "FENDER RHODES MK 1": "https://www.ebay.com/sch/i.html?_nkw=fender+rhodes+mk+1",
+    "FENDER RHODES MK 2": "https://www.ebay.com/sch/i.html?_nkw=fender+rhodes+mk+2",
+}
 
 
 class PianoFinder:
@@ -11,8 +19,26 @@ class PianoFinder:
     def __init__(self, piano_name: str):
         self.piano_name = piano_name
 
-    def get_offers(self):
-        return self._extract_data_from_auctions()
+    def get_offers(self) -> Dict[str, List[str]] | None:
+        list_of_elements = self._get_list_of_pianos()
+        accepted_conditions = [
+            PianoCondition.PRE_OWNED.value,
+            PianoCondition.REFURBISHED.value,
+            PianoCondition.OPEN_BOX.value
+        ]
+        validated_offers = {}
+        for count, element in enumerate(list_of_elements):
+            if count > 5:
+                break
+            if self._get_piano_condition(element) not in accepted_conditions:
+                continue
+            condition = self._get_piano_condition(element)
+            price = self._get_price(element)
+            url = self._get_url_to_product(element)
+
+            new_record = {f"{self.piano_name} - {count}": [condition, price, url]}
+            validated_offers.update(new_record)
+        return validated_offers
 
     def _get_ebay_auction_for_concrete_piano(self) -> requests.Response:
         auction = requests.get(PIANO_PAGES_MAPPING[self.piano_name])
@@ -26,20 +52,6 @@ class PianoFinder:
         result = self._get_auction_content().find("div", {"class": "srp-river-results"}).find("ul", recursive=False).\
             find_all("li", recursive=False)
         return result
-
-    def _extract_data_from_auctions(self) -> Dict[str, List[str]] | None:
-        list_of_elements = self._get_list_of_pianos()
-        accepted_conditions = [PianoCondition.PRE_OWNED, PianoCondition.REFURBISHED]
-        validated_offers = {}
-        for count, element in enumerate(list_of_elements):
-            if self._get_piano_condition(element) is not accepted_conditions:
-                return
-            condition = self._get_piano_condition(element)
-            price = self._get_price(element)
-            url = self._get_url_to_product(element)
-
-            validated_offers[str(count)] = [condition, price, url]
-        return validated_offers
 
     def _get_price(self, element: PageElement) -> str:
         return element.find_next("span", {"class": "ITALIC"}).text
