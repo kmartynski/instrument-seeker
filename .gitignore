@@ -170,4 +170,5 @@ fabric.properties
 *mies
 
 __pycache__/
+.DS_Store
 # End of https://www.toptal.com/developers/gitignore/api/pycharm,test
