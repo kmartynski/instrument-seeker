@@ -1,6 +1,6 @@
 from bs4 import BeautifulSoup, ResultSet, PageElement
 import requests
-from typing import Dict, List
+from typing import Dict, List, Union
 
 from enums import PianoCondition
 
@@ -19,7 +19,7 @@ class PianoFinder:
     def __init__(self, piano_name: str):
         self.piano_name = piano_name
 
-    def get_offers(self) -> Dict[str, List[str]] | None:
+    def get_offers(self) -> Union[Dict[str, List[str]], None]:
         list_of_elements = self._get_list_of_pianos()
         accepted_conditions = [
             PianoCondition.PRE_OWNED.value,
