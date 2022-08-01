@@ -9,6 +9,9 @@ requests = "*"
 html5lib = "*"
 pytest = "*"
 httpx = "*"
+boto3 = "*"
+pydantic = "*"
+python-dotenv = "*"
 
 [dev-packages]
 respx = "*"
