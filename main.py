@@ -9,7 +9,7 @@ pianos = ["YAMAHA CP-60M", "YAMAHA CP-70B", "YAMAHA CP-80B", "FENDER RHODES MK 1
 results: Dict[str, Any] = {}
 
 
-def main():
+def main(event, context):
     for piano in pianos:
         finder = PianoFinder(piano)
         results[piano] = finder.get_offers()
